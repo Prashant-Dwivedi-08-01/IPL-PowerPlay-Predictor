@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+        integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: url("/static/p1.jpg");
+            background-repeat: no-repeat;
+            background-size: 100% 105%;
+            /* background-size: cover; */
+        }
+
+        .custom_navbar {
+            background-color: #0060c0 !important;
+            box-shadow: 10px 7px 10px 10px;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 2rem;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        .result-container {
+            width: 33%;
+            height: 610px;
+            text-align: center;
+            margin-left: 34%;
+            margin-top: 1%;
+            padding: 10px;
+        }
+
+        .result {
+            margin-top: 78%;
+            font-family: 'Pattaya', sans-serif;
+            font-size: 2rem;
+            border: 1px solid;
+            border-radius: 30%;
+            padding: 3%;
+            background-color: lightcyan;
+        }
+        
+
+        .form-container {
+            width: 33%;
+            height: 610px;
+            text-align: center;
+            margin-left: 34%;
+            margin-top: 1%;
+            border: 1px solid;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #ffc300;
+            overflow-y: scroll;
+            animation-name: changeColor;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+
+        }
+
+        @keyframes changeColor {
+            0% {
+                background-color: #fbff0077;
+            }
+
+            14% {
+                background-color: #ff510075;
+            }
+
+            28% {
+                background-color: #ff000088;
+            }
+
+            42% {
+                background-color: #00aeff9f;
+            }
+
+            56% {
+                background-color: #001aff8a;
+                ;
+            }
+
+            70% {
+                background-color: #dd850080;
+
+            }
+
+            84% {
+                background-color: #ff6a658e;
+            }
+
+            98% {
+                background-color: #00ff6a7a;
+            }
+        }
+
+        .form-label {
+            font-family: 'Pattaya', sans-serif;
+            font-size: 1.2em;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 20px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 8px #ff0000;
+            border-radius: 8px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #02000029;
+            border-radius: 10px;
+        }
+
+
+
+        .bt_input {
+            display: inline;
+            width: 90%;
+
+        }
+
+        #plus_btn_bl {
+            border-radius: 6px;
+            color: white;
+            background-color: #00a6ff;
+            margin: 0px 6px;
+            font-size: 1.5rem;
+            padding: 0px 8px;
+            border: none;
+        }
+
+        #plus_btn_bt {
+            border-radius: 6px;
+            color: white;
+            background-color: #00a6ff;
+            margin: 0px 6px;
+            font-size: 1.5rem;
+            padding: 0px 8px;
+            border: none;
+        }
+
+        .minus_btn {
+            border-radius: 6px;
+            color: white;
+            background-color: #00a6ff;
+            margin: 0px 6px;
+            font-size: 1.5rem;
+            padding: 0px 8px;
+            border: none;
+        }
+    </style>
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark  custom_navbar">
+        <div style="width: 100%;
+        text-align: center;">
+            <b style="color: white; font-size: 1.2rem;" id="navHeading">IPL 2021 Powerplay Predictor</b>
+
+        </div>
+    </nav>
+    <!--  -->
+
+
+
+    <div class="heading">
+        Get the Powerplay Score Here!
+    </div>
+
+
+    {% if response %}
+
+    <div class="result-container">
+        <p class="result">{{batting_team}} will score {{runs}} against {{bowling_team}} in Powerplay in {{venue}}</p>
+    </div>
+
+    {% else %}
+    <!-- TAKING INPUT -->
+    <div class="form-container">
+        <!--    -->
+        <form action="" method="POST" id="inputForm">{% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Venue</label>
+                <select id="select-state" name="venue" aria-label="Default select example" placeholder="Select venue">
+                    <option>Buffalo Park </option>
+                    <option>OUTsurance Oval </option>
+                    <option>De Beers Diamond Oval </option>
+                    <option>Shaheed Veer Narayan Singh International Stadium </option>
+                    <option>Himachal Pradesh Cricket Association Stadium </option>
+                    <option>JSCA International Stadium Complex </option>
+                    <option>Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium </option>
+                    <option>Dr DY Patil Sports Academy </option>
+                    <option>Kingsmead </option>
+                    <option>New Wanderers Stadium </option>
+                    <option>SuperSport Park </option>
+                    <option>Sheikh Zayed Stadium </option>
+                    <option>Newlands </option>
+                    <option>Sawai Mansingh Stadium </option>
+                    <option>Barabati Stadium </option>
+                    <option>Maharashtra Cricket Association Stadium </option>
+                    <option>Dubai International Cricket Stadium </option>
+                    <option>M Chinnaswamy Stadium </option>
+                    <option>Eden Gardens </option>
+                    <option>Rajiv Gandhi International Stadium, Uppal </option>
+                    <option>St George's Park </option>
+                    <option>MA Chidambaram Stadium </option>
+                    <option>Wankhede Stadium </option>
+                    <option>Sharjah Cricket Stadium </option>
+                    <option>Narendra Modi Stadium </option>
+                    <option>Punjab Cricket Association Stadium, Mohali </option>
+                    <option>Arun Jaitley Stadium </option>
+                    <option>Subrata Roy Sahara Stadium </option>
+                    <option>Punjab Cricket Association IS Bindra Stadium, Mohali </option>
+                    <option>Rajiv Gandhi International Stadium </option>
+                    <option>Holkar Cricket Stadium </option>
+                    <option>Punjab Cricket Association IS Bindra Stadium </option>
+                    <option>Brabourne Stadium </option>
+                </select>
+
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Batting Team</label>
+                <select id="select-state" name="batting_team" aria-label="Default select example"
+                    placeholder="Select venue">
+                    <option>Chennai Super Kings</option>
+                    <option>Royal Challengers Bangalore</option>
+                    <option>Delhi Capitals</option>
+                    <option>Rajasthan Royals</option>
+                    <option>Mumbai Indians</option>
+                    <option>Punjab Kings</option>
+                    <option>Sunrisers Hyderabad</option>
+                    <option>Kolkata Knight Riders</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"> Bowling Team </label>
+                <select id="select-state" name="bowling_team" aria-label="Default select example"
+                    placeholder="Select venue">
+                    <option>Mumbai Indians</option>
+                    <option>Sunrisers Hyderabad</option>
+                    <option>Chennai Super Kings</option>
+                    <option>Royal Challengers Bangalore</option>
+                    <option>Rajasthan Royals</option>
+                    <option>Kolkata Knight Riders</option>
+                    <option>Delhi Capitals</option>
+                    <option>Punjab Kings</option>
+                </select>
+            </div>
+
+            <div class="mb-3" id="batsmen">
+                <label for="exampleInputEmail1" class="form-label">Batsmen Played in Powerplay</label><br>
+                <div><input type="text" class="form-control bt_input" name="bt-1"><button id="plus_btn_bt">+</button>
+                </div>
+                <input type="number" style="display: none;" name="no-of-bt" id="no_of_bt" value=1>
+            </div>
+
+            <div class="mb-3" id="bowler">
+                <label for="exampleInputEmail1" class="form-label">Bowlers Played in Powerplay</label><br>
+                <div><input type="text" class="form-control bt_input" name="bl-1"><button id="plus_btn_bl">+</button>
+                </div>
+                <input type="number" style="display: none;" name="no-of-bl" id="no_of_bl" value=1>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Innings</label>
+                <select name="innings" aria-label="Default select example">
+                    <option value="1">1st</option>
+                    <option value="2">2nd</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });
+
+    let i = 2;
+    document.getElementById('plus_btn_bt').addEventListener("click", (e) => {
+        e.preventDefault();
+
+        let str = `<span><input name="bt-${i}" class="form-control bt_input">
+                        <button class="minus_btn">-</button></span>`
+
+        let div = document.createElement('div');
+        div.innerHTML = str;
+        document.getElementById("batsmen").appendChild(div)
+
+
+        let minus_buttons = document.getElementsByClassName('minus_btn');
+        for (remove_button of minus_buttons) {
+            remove_button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.target.parentElement.remove();
+            })
+        }
+        document.getElementById('no_of_bt').setAttribute('value', i);
+        i++;
+
+    })
+
+    let j = 2;
+    document.getElementById('plus_btn_bl').addEventListener("click", (e) => {
+        e.preventDefault();
+
+        let str = `<span><input name="bl-${j}" class="form-control bt_input">
+                        <button class="minus_btn">-</button></span>`
+
+        let div = document.createElement('div');
+        div.innerHTML = str;
+        document.getElementById("bowler").appendChild(div)
+
+
+        let minus_buttons = document.getElementsByClassName('minus_btn');
+        for (remove_button of minus_buttons) {
+            remove_button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.target.parentElement.remove();
+            })
+        }
+        document.getElementById('no_of_bl').setAttribute('value', j);
+        i++;
+
+    })
+
+</script>
+
+<!-- <script>
+$("inputForm").submit(function (e){
+    e.preventDefault();
+    $form = $(this);
+    let formData = new FormData(this);
+    $.ajax({
+        headers: { "X-CSRFToken": token },
+        url :  "/result/",
+        type: 'POST',
+        data:  formData,
+        success: function (response) {
+            e.preventDefault();
+            console.log(response)
+                        $('.error').remove();
+                        console.log("Hello")
+                        if (response.error) {
+                            alert('Upload Unsuccessful');
+                        }
+                        else {
+                            document.getElementById("navHeading").innerHTML = response.responseValue;
+                            console.log("Hello")
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+    })
+})
+</script> -->
+
+</html>
